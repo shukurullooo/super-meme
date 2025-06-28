@@ -3,25 +3,33 @@ import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleWishlist } from "@/redux/features/wishlist";
 import { addToCart } from "@/redux/features/cart";
+import { useNavigate } from "react-router-dom";
 
-const ProductItem = (product) => {
-  const { title, brand, price, thumbnail } = product;
+const ProductItem = ({ product }) => {
+  if (!product) return null;
+
+  const { title, brand, price, thumbnail, id } = product;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const wishlist = useSelector((state) => state.wishlist.value);
 
   return (
-    <div className="bg-gray-100 group relative">
+    <div className="bg-gray-100 group relative cursor-pointer">
       <div className="h-[285px] overflow-hidden relative">
         <img
           className="w-full h-full object-contain group-hover:scale-105 duration-300"
           src={thumbnail}
           alt={title}
+          onClick={() => navigate(`/product/${id}`)}
         />
         <button
-          onClick={() => dispatch(toggleWishlist(product))}
-          className="absolute top-4 right-4 cursor-pointer bg-white size-7 grid place-items-center  rounded-full"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(toggleWishlist(product));
+          }}
+          className="absolute top-4 right-4 cursor-pointer bg-white size-7 grid place-items-center rounded-full"
         >
-          {wishlist.some((item) => item.id === product.id) ? (
+          {wishlist.some((item) => item.id === id) ? (
             <HeartFilled style={{ color: "red" }} />
           ) : (
             <HeartOutlined style={{ color: "gray" }} />
@@ -35,8 +43,11 @@ const ProductItem = (product) => {
         <br />
         <br />
         <button
-          className="w-full bg-[#c89d38] text-white  rounded-md"
-          onClick={() => dispatch(addToCart(product))}
+          className="w-full bg-[#c89d38] text-white rounded-md"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(addToCart(product));
+          }}
         >
           Add to cart
         </button>
