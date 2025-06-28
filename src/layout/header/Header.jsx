@@ -4,7 +4,7 @@ import person from '../../assets/person.svg'
 import shop from '../../assets/shop.svg'
 import yurak from '../../assets/yurak.svg'
 import seorch from '../../assets/seorch.svg'
-import logo from '../../assets/logo.svg'
+import logo from '../../assets/Logo.svg'
 import { FiMenu, FiX } from "react-icons/fi"
 import { useProduct } from '@/api/hooks/useProduct'
 import useDebounce from '@/hooks/useDebounce'
