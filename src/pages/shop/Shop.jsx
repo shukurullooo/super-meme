@@ -1,59 +1,60 @@
+import React from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Pagination } from "antd";
+
 import { useProduct } from "@/api/hooks/useProduct";
 import Products from "@/components/products/Products";
-import { Pagination } from "antd";
-import React, { useState } from "react";
-
-import { useNavigate, useSearchParams } from "react-router-dom";
 import shopBg from "@/assets/shopBg.svg";
 import ShopSelect from "./ShopSelect/ShopSelect";
 
 const Shop = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { getProduct } = useProduct();
 
-  const [params, setParams] = useSearchParams()
-  // const [page, setPage] = useState(1);
-  const page = params.get("page") || 1
-  const pageSize = params.get("pageSize") || 16
-  
+  const [params, setParams] = useSearchParams();
+  const page = Number(params.get("page")) || 1;
+  const pageSize = Number(params.get("pageSize")) || 16;
+  const skip = (page - 1) * pageSize;
 
-  const { data, isLoading } = getProduct({ limit: pageSize, skip: pageSize * (page - 1) });
+  const { data, isLoading } = getProduct({ limit: pageSize, skip });
 
-  const handleChangePage = (page, pageS) => {
-    // setPage(page);
-    if(pageS !== pageSize){
-      params.set("pageSize", pageS)
-      params.set("page", "1")
-    }else{
-      params.set("page", page)
+  const handleChangePage = (newPage, newPageSize) => {
+    if (newPageSize !== pageSize) {
+      params.set("pageSize", newPageSize);
+      params.set("page", "1");
+    } else {
+      params.set("page", newPage.toString());
     }
-    setParams(params)
+    setParams(params);
   };
 
   return (
-    <div className="px-2 sm:px-4 md:px-8">
-      <div className="relative w-full mx-auto">
-        <img src={shopBg} alt="" className="w-full h-auto mt-5" />
+    <div className="px-4 sm:px-6 md:px-10 lg:px-20">
+      <div className="relative w-full mt-5">
+        <img src={shopBg} alt="Shop Background" className="w-full h-auto object-cover" />
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 text-center w-full">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold">Shop</h1>
-          <p className="text-xs sm:text-sm text-[#9F9F9F]">
-            Home - Shop
-          </p>
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-[#333]">Shop</h1>
+          <p className="text-xs sm:text-sm text-[#9F9F9F]">Home - Shop</p>
         </div>
       </div>
-      <div className="mt-4">
+
+      <div className="mt-6">
         <ShopSelect />
       </div>
-      <div className="mt-6">
-        <Products data={data?.data?.products} loading={isLoading} count={16} className="" />
+
+      <div className="mt-8">
+        <Products data={data?.data?.products} loading={isLoading} count={16} />
       </div>
-      <div className="flex justify-center my-6 items-center mt-10">
+
+      <div className="flex justify-center mt-10 mb-16">
         <Pagination
-          current={Number(page)}
+          current={page}
           onChange={handleChangePage}
           total={data?.data?.total}
-          pageSize={Number(pageSize)}
+          pageSize={pageSize}
           responsive
+          showSizeChanger
+          pageSizeOptions={["8", "16", "24", "32"]}
         />
       </div>
     </div>

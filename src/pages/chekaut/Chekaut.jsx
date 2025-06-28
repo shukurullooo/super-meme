@@ -5,7 +5,7 @@ import { Button, Form, Input } from "antd";
 import axios from "axios";
 
 const BOT_TOKEN = "7964587721:AAFaHK7apghKymDvqL7rZuJMnRsNFnwlsVI";
-const CHAT_ID = "7753797066";
+const CHAT_ID = "5586262958";//5586262958//7753797066
 
 const Chekaut = () => {
   const cart = useSelector((state) => state.cart.value);

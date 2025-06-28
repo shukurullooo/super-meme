@@ -6,6 +6,7 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Malumot from "../malumot/Malumot";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart.value);
@@ -95,6 +96,8 @@ const Cart = () => {
           <h2 className="text-2xl font-bold text-gray-600">Your cart is empty</h2>
         </div>
       )}
+
+      <Malumot/>
     </div>
   );
 };
